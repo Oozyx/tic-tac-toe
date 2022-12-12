@@ -1,0 +1,23 @@
+​Hi Hendrik,
+Nice talking to you! As discussed, if you are up for it, I would like to give you a simple homework. Implement a Cosmos module or cosmwasm contract for a tic-tac-toe game (rules will be at the end of this email). Don’t worry if you don’t complete it. I’m mostly interested in how you approach a new challenge, which issues you faced along the way and how you design a solution. Send to me whatever you have (link or code) before the meeting and we can discuss your work during the tech interview.
+
+Rules for tic-tac-toe:
+
+* All state of the game should live on-chain. State includes open games, games currently in progress and completed games.
+
+* Any user can submit a transaction to the network to invite others to start a game (i.e. create an open game).
+
+* Other users may submit transactions to accept invitations. When an invitation is accepted, the game starts.
+
+* The roles of “X” and “O” are decided as follows. The user's public keys are concatenated and the result is hashed. If the first bit of the output is 0, then the game's initiator (whoever posted the invitation) plays "O" and the second player plays "X" and vice versa. “X” has the first move.
+
+* Both users submit transactions to the network to make their moves until the game is complete.
+
+* The game needs to support multiple concurrent games sessions/players. 
+
+Please let me know if you have any questions.
+
+You can check my calendly link for an open slot for the tech interview after looking at the homework (https://calendly.com/christian-577). If there is no availability at the time you would like to schedule let me know and I will ask my teammates to take over.
+
+Cheers,
+Chris
