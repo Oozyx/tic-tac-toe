@@ -33,6 +33,8 @@ export interface RpcStatus {
   details?: ProtobufAny[];
 }
 
+export type TictactoeMsgAcceptGameResponse = object;
+
 export interface TictactoeMsgCreateGameResponse {
   /** @format int64 */
   gameId?: number;

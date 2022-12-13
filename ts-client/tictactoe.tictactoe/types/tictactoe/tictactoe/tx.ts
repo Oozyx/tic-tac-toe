@@ -11,6 +11,14 @@ export interface MsgCreateGameResponse {
   gameId: number;
 }
 
+export interface MsgAcceptGame {
+  creator: string;
+  gameId: number;
+}
+
+export interface MsgAcceptGameResponse {
+}
+
 function createBaseMsgCreateGame(): MsgCreateGame {
   return { creator: "" };
 }
@@ -105,10 +113,108 @@ export const MsgCreateGameResponse = {
   },
 };
 
+function createBaseMsgAcceptGame(): MsgAcceptGame {
+  return { creator: "", gameId: 0 };
+}
+
+export const MsgAcceptGame = {
+  encode(message: MsgAcceptGame, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.creator !== "") {
+      writer.uint32(10).string(message.creator);
+    }
+    if (message.gameId !== 0) {
+      writer.uint32(16).uint32(message.gameId);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgAcceptGame {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgAcceptGame();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.creator = reader.string();
+          break;
+        case 2:
+          message.gameId = reader.uint32();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): MsgAcceptGame {
+    return {
+      creator: isSet(object.creator) ? String(object.creator) : "",
+      gameId: isSet(object.gameId) ? Number(object.gameId) : 0,
+    };
+  },
+
+  toJSON(message: MsgAcceptGame): unknown {
+    const obj: any = {};
+    message.creator !== undefined && (obj.creator = message.creator);
+    message.gameId !== undefined && (obj.gameId = Math.round(message.gameId));
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<MsgAcceptGame>, I>>(object: I): MsgAcceptGame {
+    const message = createBaseMsgAcceptGame();
+    message.creator = object.creator ?? "";
+    message.gameId = object.gameId ?? 0;
+    return message;
+  },
+};
+
+function createBaseMsgAcceptGameResponse(): MsgAcceptGameResponse {
+  return {};
+}
+
+export const MsgAcceptGameResponse = {
+  encode(_: MsgAcceptGameResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgAcceptGameResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgAcceptGameResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(_: any): MsgAcceptGameResponse {
+    return {};
+  },
+
+  toJSON(_: MsgAcceptGameResponse): unknown {
+    const obj: any = {};
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<MsgAcceptGameResponse>, I>>(_: I): MsgAcceptGameResponse {
+    const message = createBaseMsgAcceptGameResponse();
+    return message;
+  },
+};
+
 /** Msg defines the Msg service. */
 export interface Msg {
-  /** this line is used by starport scaffolding # proto/tx/rpc */
   CreateGame(request: MsgCreateGame): Promise<MsgCreateGameResponse>;
+  /** this line is used by starport scaffolding # proto/tx/rpc */
+  AcceptGame(request: MsgAcceptGame): Promise<MsgAcceptGameResponse>;
 }
 
 export class MsgClientImpl implements Msg {
@@ -116,11 +222,18 @@ export class MsgClientImpl implements Msg {
   constructor(rpc: Rpc) {
     this.rpc = rpc;
     this.CreateGame = this.CreateGame.bind(this);
+    this.AcceptGame = this.AcceptGame.bind(this);
   }
   CreateGame(request: MsgCreateGame): Promise<MsgCreateGameResponse> {
     const data = MsgCreateGame.encode(request).finish();
     const promise = this.rpc.request("tictactoe.tictactoe.Msg", "CreateGame", data);
     return promise.then((data) => MsgCreateGameResponse.decode(new _m0.Reader(data)));
+  }
+
+  AcceptGame(request: MsgAcceptGame): Promise<MsgAcceptGameResponse> {
+    const data = MsgAcceptGame.encode(request).finish();
+    const promise = this.rpc.request("tictactoe.tictactoe.Msg", "AcceptGame", data);
+    return promise.then((data) => MsgAcceptGameResponse.decode(new _m0.Reader(data)));
   }
 }
 
