@@ -32,6 +32,10 @@ const (
 	// TODO: Determine the simulation weight value
 	defaultWeightMsgAcceptGame int = 100
 
+	opWeightMsgPerformMove = "op_weight_msg_perform_move"
+	// TODO: Determine the simulation weight value
+	defaultWeightMsgPerformMove int = 100
+
 	// this line is used by starport scaffolding # simapp/module/const
 )
 
@@ -86,6 +90,17 @@ func (am AppModule) WeightedOperations(simState module.SimulationState) []simtyp
 	operations = append(operations, simulation.NewWeightedOperation(
 		weightMsgAcceptGame,
 		tictactoesimulation.SimulateMsgAcceptGame(am.accountKeeper, am.bankKeeper, am.keeper),
+	))
+
+	var weightMsgPerformMove int
+	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgPerformMove, &weightMsgPerformMove, nil,
+		func(_ *rand.Rand) {
+			weightMsgPerformMove = defaultWeightMsgPerformMove
+		},
+	)
+	operations = append(operations, simulation.NewWeightedOperation(
+		weightMsgPerformMove,
+		tictactoesimulation.SimulateMsgPerformMove(am.accountKeeper, am.bankKeeper, am.keeper),
 	))
 
 	// this line is used by starport scaffolding # simapp/module/operation

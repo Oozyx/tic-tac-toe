@@ -50,6 +50,8 @@ export interface TictactoeMsgCreateGameResponse {
   gameId?: number;
 }
 
+export type TictactoeMsgPerformMoveResponse = object;
+
 /**
  * Params defines the parameters for the module.
  */
