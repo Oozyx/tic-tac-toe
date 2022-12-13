@@ -45,12 +45,12 @@ export function gameStatusToJSON(object: GameStatus): string {
 export interface Game {
   id: number;
   status: GameStatus;
-  playerOne: string;
-  playerTwo: string;
+  challenger: string;
+  opponent: string;
 }
 
 function createBaseGame(): Game {
-  return { id: 0, status: 0, playerOne: "", playerTwo: "" };
+  return { id: 0, status: 0, challenger: "", opponent: "" };
 }
 
 export const Game = {
@@ -61,11 +61,11 @@ export const Game = {
     if (message.status !== 0) {
       writer.uint32(16).int32(message.status);
     }
-    if (message.playerOne !== "") {
-      writer.uint32(26).string(message.playerOne);
+    if (message.challenger !== "") {
+      writer.uint32(26).string(message.challenger);
     }
-    if (message.playerTwo !== "") {
-      writer.uint32(34).string(message.playerTwo);
+    if (message.opponent !== "") {
+      writer.uint32(34).string(message.opponent);
     }
     return writer;
   },
@@ -84,10 +84,10 @@ export const Game = {
           message.status = reader.int32() as any;
           break;
         case 3:
-          message.playerOne = reader.string();
+          message.challenger = reader.string();
           break;
         case 4:
-          message.playerTwo = reader.string();
+          message.opponent = reader.string();
           break;
         default:
           reader.skipType(tag & 7);
@@ -101,8 +101,8 @@ export const Game = {
     return {
       id: isSet(object.id) ? Number(object.id) : 0,
       status: isSet(object.status) ? gameStatusFromJSON(object.status) : 0,
-      playerOne: isSet(object.playerOne) ? String(object.playerOne) : "",
-      playerTwo: isSet(object.playerTwo) ? String(object.playerTwo) : "",
+      challenger: isSet(object.challenger) ? String(object.challenger) : "",
+      opponent: isSet(object.opponent) ? String(object.opponent) : "",
     };
   },
 
@@ -110,8 +110,8 @@ export const Game = {
     const obj: any = {};
     message.id !== undefined && (obj.id = Math.round(message.id));
     message.status !== undefined && (obj.status = gameStatusToJSON(message.status));
-    message.playerOne !== undefined && (obj.playerOne = message.playerOne);
-    message.playerTwo !== undefined && (obj.playerTwo = message.playerTwo);
+    message.challenger !== undefined && (obj.challenger = message.challenger);
+    message.opponent !== undefined && (obj.opponent = message.opponent);
     return obj;
   },
 
@@ -119,8 +119,8 @@ export const Game = {
     const message = createBaseGame();
     message.id = object.id ?? 0;
     message.status = object.status ?? 0;
-    message.playerOne = object.playerOne ?? "";
-    message.playerTwo = object.playerTwo ?? "";
+    message.challenger = object.challenger ?? "";
+    message.opponent = object.opponent ?? "";
     return message;
   },
 };

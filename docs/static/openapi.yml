@@ -39882,9 +39882,9 @@ paths:
                         - IN_PROGRESS
                         - COMPLETE
                       default: OPEN
-                    playerOne:
+                    challenger:
                       type: string
-                    playerTwo:
+                    opponent:
                       type: string
               pagination:
                 type: object
@@ -40016,9 +40016,9 @@ paths:
                         - IN_PROGRESS
                         - COMPLETE
                       default: OPEN
-                    playerOne:
+                    challenger:
                       type: string
-                    playerTwo:
+                    opponent:
                       type: string
               pagination:
                 type: object
@@ -67318,9 +67318,9 @@ definitions:
                 - IN_PROGRESS
                 - COMPLETE
               default: OPEN
-            playerOne:
+            challenger:
               type: string
-            playerTwo:
+            opponent:
               type: string
       pagination:
         type: object
@@ -67366,9 +67366,9 @@ definitions:
                 - IN_PROGRESS
                 - COMPLETE
               default: OPEN
-            playerOne:
+            challenger:
               type: string
-            playerTwo:
+            opponent:
               type: string
       pagination:
         type: object
@@ -67416,9 +67416,9 @@ definitions:
           - IN_PROGRESS
           - COMPLETE
         default: OPEN
-      playerOne:
+      challenger:
         type: string
-      playerTwo:
+      opponent:
         type: string
   tictactoe.tictactoe.game.GameStatus:
     type: string

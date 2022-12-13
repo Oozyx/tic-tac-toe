@@ -39,13 +39,13 @@ func (k msgServer) AcceptGame(goCtx context.Context, msg *types.MsgAcceptGame) (
 	}
 
 	// validate sender is not accepting own game
-	if game.PlayerOne == msg.Creator {
+	if game.Challenger == msg.Creator {
 		return nil, errors.New("cannot accept own game invitation")
 	}
 
 	// set new game data
 	game.Status = types.GameStatus_IN_PROGRESS
-	game.PlayerTwo = msg.Creator
+	game.Opponent = msg.Creator
 
 	// update store
 	gameBytes, err = k.cdc.Marshal(&game)
