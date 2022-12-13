@@ -2,7 +2,6 @@ package keeper
 
 import (
 	"context"
-	"encoding/binary"
 
 	"tic-tac-toe/x/tictactoe/types"
 
@@ -13,14 +12,11 @@ import (
 func (k msgServer) CreateGame(goCtx context.Context, msg *types.MsgCreateGame) (*types.MsgCreateGameResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
-	// retrieve the current game count to be used as the game ID
-	gameCountStore := prefix.NewStore(ctx.KVStore(k.storeKey), []byte(types.GameCountKey))
 	// retrieve the games store for storing game data
 	gamesStore := prefix.NewStore(ctx.KVStore(k.storeKey), []byte(types.GamesKey))
 
 	// get the current game count to use as ID for tictactoe game
-	gameCountBytes := gameCountStore.Get([]byte(types.GameCountKey))
-	currentGameCount := binary.BigEndian.Uint32(gameCountBytes)
+	currentGameCount, gameCountBytes := k.GetGameCount(ctx)
 
 	// create game struct
 	game := types.Game{Id: currentGameCount}

@@ -1,5 +1,7 @@
 /* eslint-disable */
 import _m0 from "protobufjs/minimal";
+import { PageRequest, PageResponse } from "../../cosmos/base/query/v1beta1/pagination";
+import { Game } from "./game/game";
 import { Params } from "./params";
 
 export const protobufPackage = "tictactoe.tictactoe";
@@ -15,10 +17,12 @@ export interface QueryParamsResponse {
 }
 
 export interface QueryGamesRequest {
+  pagination: PageRequest | undefined;
 }
 
 export interface QueryGamesResponse {
-  id: number;
+  games: Game[];
+  pagination: PageResponse | undefined;
 }
 
 function createBaseQueryParamsRequest(): QueryParamsRequest {
@@ -110,11 +114,14 @@ export const QueryParamsResponse = {
 };
 
 function createBaseQueryGamesRequest(): QueryGamesRequest {
-  return {};
+  return { pagination: undefined };
 }
 
 export const QueryGamesRequest = {
-  encode(_: QueryGamesRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: QueryGamesRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.pagination !== undefined) {
+      PageRequest.encode(message.pagination, writer.uint32(10).fork()).ldelim();
+    }
     return writer;
   },
 
@@ -125,6 +132,9 @@ export const QueryGamesRequest = {
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
+        case 1:
+          message.pagination = PageRequest.decode(reader, reader.uint32());
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -133,29 +143,37 @@ export const QueryGamesRequest = {
     return message;
   },
 
-  fromJSON(_: any): QueryGamesRequest {
-    return {};
+  fromJSON(object: any): QueryGamesRequest {
+    return { pagination: isSet(object.pagination) ? PageRequest.fromJSON(object.pagination) : undefined };
   },
 
-  toJSON(_: QueryGamesRequest): unknown {
+  toJSON(message: QueryGamesRequest): unknown {
     const obj: any = {};
+    message.pagination !== undefined
+      && (obj.pagination = message.pagination ? PageRequest.toJSON(message.pagination) : undefined);
     return obj;
   },
 
-  fromPartial<I extends Exact<DeepPartial<QueryGamesRequest>, I>>(_: I): QueryGamesRequest {
+  fromPartial<I extends Exact<DeepPartial<QueryGamesRequest>, I>>(object: I): QueryGamesRequest {
     const message = createBaseQueryGamesRequest();
+    message.pagination = (object.pagination !== undefined && object.pagination !== null)
+      ? PageRequest.fromPartial(object.pagination)
+      : undefined;
     return message;
   },
 };
 
 function createBaseQueryGamesResponse(): QueryGamesResponse {
-  return { id: 0 };
+  return { games: [], pagination: undefined };
 }
 
 export const QueryGamesResponse = {
   encode(message: QueryGamesResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.id !== 0) {
-      writer.uint32(8).int32(message.id);
+    for (const v of message.games) {
+      Game.encode(v!, writer.uint32(10).fork()).ldelim();
+    }
+    if (message.pagination !== undefined) {
+      PageResponse.encode(message.pagination, writer.uint32(18).fork()).ldelim();
     }
     return writer;
   },
@@ -168,7 +186,10 @@ export const QueryGamesResponse = {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.id = reader.int32();
+          message.games.push(Game.decode(reader, reader.uint32()));
+          break;
+        case 2:
+          message.pagination = PageResponse.decode(reader, reader.uint32());
           break;
         default:
           reader.skipType(tag & 7);
@@ -179,18 +200,30 @@ export const QueryGamesResponse = {
   },
 
   fromJSON(object: any): QueryGamesResponse {
-    return { id: isSet(object.id) ? Number(object.id) : 0 };
+    return {
+      games: Array.isArray(object?.games) ? object.games.map((e: any) => Game.fromJSON(e)) : [],
+      pagination: isSet(object.pagination) ? PageResponse.fromJSON(object.pagination) : undefined,
+    };
   },
 
   toJSON(message: QueryGamesResponse): unknown {
     const obj: any = {};
-    message.id !== undefined && (obj.id = Math.round(message.id));
+    if (message.games) {
+      obj.games = message.games.map((e) => e ? Game.toJSON(e) : undefined);
+    } else {
+      obj.games = [];
+    }
+    message.pagination !== undefined
+      && (obj.pagination = message.pagination ? PageResponse.toJSON(message.pagination) : undefined);
     return obj;
   },
 
   fromPartial<I extends Exact<DeepPartial<QueryGamesResponse>, I>>(object: I): QueryGamesResponse {
     const message = createBaseQueryGamesResponse();
-    message.id = object.id ?? 0;
+    message.games = object.games?.map((e) => Game.fromPartial(e)) || [];
+    message.pagination = (object.pagination !== undefined && object.pagination !== null)
+      ? PageResponse.fromPartial(object.pagination)
+      : undefined;
     return message;
   },
 };
