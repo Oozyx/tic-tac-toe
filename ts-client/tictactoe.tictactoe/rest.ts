@@ -23,6 +23,8 @@ export interface GameGame {
   opponent?: string;
   playerX?: string;
   playerO?: string;
+  nextTurn?: string;
+  winner?: string;
   board?: GameBoardEntry[];
 }
 

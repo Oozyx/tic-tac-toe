@@ -39890,6 +39890,10 @@ paths:
                       type: string
                     playerO:
                       type: string
+                    nextTurn:
+                      type: string
+                    winner:
+                      type: string
                     board:
                       type: array
                       items:
@@ -40036,6 +40040,10 @@ paths:
                     playerX:
                       type: string
                     playerO:
+                      type: string
+                    nextTurn:
+                      type: string
+                    winner:
                       type: string
                     board:
                       type: array
@@ -67354,6 +67362,10 @@ definitions:
               type: string
             playerO:
               type: string
+            nextTurn:
+              type: string
+            winner:
+              type: string
             board:
               type: array
               items:
@@ -67414,6 +67426,10 @@ definitions:
             playerX:
               type: string
             playerO:
+              type: string
+            nextTurn:
+              type: string
+            winner:
               type: string
             board:
               type: array
@@ -67484,6 +67500,10 @@ definitions:
       playerX:
         type: string
       playerO:
+        type: string
+      nextTurn:
+        type: string
+      winner:
         type: string
       board:
         type: array

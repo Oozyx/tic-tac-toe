@@ -62,6 +62,7 @@ func (k msgServer) AcceptGame(goCtx context.Context, msg *types.MsgAcceptGame) (
 	game.Opponent = msg.Creator
 	game.PlayerX = playerX
 	game.PlayerO = playerO
+	game.NextTurn = playerX
 
 	// update store
 	gameBytes, err = k.cdc.Marshal(&game)

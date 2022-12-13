@@ -10,7 +10,9 @@ message Game {
   string opponent = 4;
   string playerX = 5;
   string playerO = 6;
-  repeated BoardEntry board = 7;
+  string nextTurn = 7;
+  string winner = 8;
+  repeated BoardEntry board = 9;
 }
 
 enum GameStatus {

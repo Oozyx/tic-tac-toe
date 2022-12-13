@@ -88,11 +88,23 @@ export interface Game {
   opponent: string;
   playerX: string;
   playerO: string;
+  nextTurn: string;
+  winner: string;
   board: BoardEntry[];
 }
 
 function createBaseGame(): Game {
-  return { id: 0, status: 0, challenger: "", opponent: "", playerX: "", playerO: "", board: [] };
+  return {
+    id: 0,
+    status: 0,
+    challenger: "",
+    opponent: "",
+    playerX: "",
+    playerO: "",
+    nextTurn: "",
+    winner: "",
+    board: [],
+  };
 }
 
 export const Game = {
@@ -115,7 +127,13 @@ export const Game = {
     if (message.playerO !== "") {
       writer.uint32(50).string(message.playerO);
     }
-    writer.uint32(58).fork();
+    if (message.nextTurn !== "") {
+      writer.uint32(58).string(message.nextTurn);
+    }
+    if (message.winner !== "") {
+      writer.uint32(66).string(message.winner);
+    }
+    writer.uint32(74).fork();
     for (const v of message.board) {
       writer.int32(v);
     }
@@ -149,6 +167,12 @@ export const Game = {
           message.playerO = reader.string();
           break;
         case 7:
+          message.nextTurn = reader.string();
+          break;
+        case 8:
+          message.winner = reader.string();
+          break;
+        case 9:
           if ((tag & 7) === 2) {
             const end2 = reader.uint32() + reader.pos;
             while (reader.pos < end2) {
@@ -174,6 +198,8 @@ export const Game = {
       opponent: isSet(object.opponent) ? String(object.opponent) : "",
       playerX: isSet(object.playerX) ? String(object.playerX) : "",
       playerO: isSet(object.playerO) ? String(object.playerO) : "",
+      nextTurn: isSet(object.nextTurn) ? String(object.nextTurn) : "",
+      winner: isSet(object.winner) ? String(object.winner) : "",
       board: Array.isArray(object?.board) ? object.board.map((e: any) => boardEntryFromJSON(e)) : [],
     };
   },
@@ -186,6 +212,8 @@ export const Game = {
     message.opponent !== undefined && (obj.opponent = message.opponent);
     message.playerX !== undefined && (obj.playerX = message.playerX);
     message.playerO !== undefined && (obj.playerO = message.playerO);
+    message.nextTurn !== undefined && (obj.nextTurn = message.nextTurn);
+    message.winner !== undefined && (obj.winner = message.winner);
     if (message.board) {
       obj.board = message.board.map((e) => boardEntryToJSON(e));
     } else {
@@ -202,6 +230,8 @@ export const Game = {
     message.opponent = object.opponent ?? "";
     message.playerX = object.playerX ?? "";
     message.playerO = object.playerO ?? "";
+    message.nextTurn = object.nextTurn ?? "";
+    message.winner = object.winner ?? "";
     message.board = object.board?.map((e) => e) || [];
     return message;
   },
