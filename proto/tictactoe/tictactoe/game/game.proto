@@ -1,0 +1,8 @@
+syntax = "proto3";
+package tictactoe.tictactoe.game;
+
+option go_package = "tic-tac-toe/x/tictactoe/types";
+
+message Game {
+  uint32 id = 1;
+}

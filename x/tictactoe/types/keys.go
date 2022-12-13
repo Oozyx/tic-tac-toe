@@ -15,6 +15,9 @@ const (
 
 	// GameCountKey defines the memory store for the amount of games created. Used as a unique game id.
 	GameCountKey = "game/count"
+
+	// GamesKey defines the memory store for the game data
+	GamesKey = "game/games"
 )
 
 func KeyPrefix(p string) []byte {
