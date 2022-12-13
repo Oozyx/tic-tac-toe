@@ -39890,6 +39890,15 @@ paths:
                       type: string
                     playerO:
                       type: string
+                    board:
+                      type: array
+                      items:
+                        type: string
+                        enum:
+                          - EMPTY
+                          - X
+                          - O
+                        default: EMPTY
               pagination:
                 type: object
                 properties:
@@ -40028,6 +40037,15 @@ paths:
                       type: string
                     playerO:
                       type: string
+                    board:
+                      type: array
+                      items:
+                        type: string
+                        enum:
+                          - EMPTY
+                          - X
+                          - O
+                        default: EMPTY
               pagination:
                 type: object
                 properties:
@@ -67334,6 +67352,15 @@ definitions:
               type: string
             playerO:
               type: string
+            board:
+              type: array
+              items:
+                type: string
+                enum:
+                  - EMPTY
+                  - X
+                  - O
+                default: EMPTY
       pagination:
         type: object
         properties:
@@ -67386,6 +67413,15 @@ definitions:
               type: string
             playerO:
               type: string
+            board:
+              type: array
+              items:
+                type: string
+                enum:
+                  - EMPTY
+                  - X
+                  - O
+                default: EMPTY
       pagination:
         type: object
         properties:
@@ -67419,6 +67455,13 @@ definitions:
         description: params holds all the parameters of this module.
         type: object
     description: QueryParamsResponse is response type for the Query/Params RPC method.
+  tictactoe.tictactoe.game.BoardEntry:
+    type: string
+    enum:
+      - EMPTY
+      - X
+      - O
+    default: EMPTY
   tictactoe.tictactoe.game.Game:
     type: object
     properties:
@@ -67440,6 +67483,15 @@ definitions:
         type: string
       playerO:
         type: string
+      board:
+        type: array
+        items:
+          type: string
+          enum:
+            - EMPTY
+            - X
+            - O
+          default: EMPTY
   tictactoe.tictactoe.game.GameStatus:
     type: string
     enum:

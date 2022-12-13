@@ -9,6 +9,12 @@
  * ---------------------------------------------------------------
  */
 
+export enum GameBoardEntry {
+  EMPTY = "EMPTY",
+  X = "X",
+  O = "O",
+}
+
 export interface GameGame {
   /** @format int64 */
   id?: number;
@@ -17,6 +23,7 @@ export interface GameGame {
   opponent?: string;
   playerX?: string;
   playerO?: string;
+  board?: GameBoardEntry[];
 }
 
 export enum GameGameStatus {

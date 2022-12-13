@@ -42,6 +42,45 @@ export function gameStatusToJSON(object: GameStatus): string {
   }
 }
 
+export enum BoardEntry {
+  EMPTY = 0,
+  X = 1,
+  O = 2,
+  UNRECOGNIZED = -1,
+}
+
+export function boardEntryFromJSON(object: any): BoardEntry {
+  switch (object) {
+    case 0:
+    case "EMPTY":
+      return BoardEntry.EMPTY;
+    case 1:
+    case "X":
+      return BoardEntry.X;
+    case 2:
+    case "O":
+      return BoardEntry.O;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return BoardEntry.UNRECOGNIZED;
+  }
+}
+
+export function boardEntryToJSON(object: BoardEntry): string {
+  switch (object) {
+    case BoardEntry.EMPTY:
+      return "EMPTY";
+    case BoardEntry.X:
+      return "X";
+    case BoardEntry.O:
+      return "O";
+    case BoardEntry.UNRECOGNIZED:
+    default:
+      return "UNRECOGNIZED";
+  }
+}
+
 export interface Game {
   id: number;
   status: GameStatus;
@@ -49,10 +88,11 @@ export interface Game {
   opponent: string;
   playerX: string;
   playerO: string;
+  board: BoardEntry[];
 }
 
 function createBaseGame(): Game {
-  return { id: 0, status: 0, challenger: "", opponent: "", playerX: "", playerO: "" };
+  return { id: 0, status: 0, challenger: "", opponent: "", playerX: "", playerO: "", board: [] };
 }
 
 export const Game = {
@@ -75,6 +115,11 @@ export const Game = {
     if (message.playerO !== "") {
       writer.uint32(50).string(message.playerO);
     }
+    writer.uint32(58).fork();
+    for (const v of message.board) {
+      writer.int32(v);
+    }
+    writer.ldelim();
     return writer;
   },
 
@@ -103,6 +148,16 @@ export const Game = {
         case 6:
           message.playerO = reader.string();
           break;
+        case 7:
+          if ((tag & 7) === 2) {
+            const end2 = reader.uint32() + reader.pos;
+            while (reader.pos < end2) {
+              message.board.push(reader.int32() as any);
+            }
+          } else {
+            message.board.push(reader.int32() as any);
+          }
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -119,6 +174,7 @@ export const Game = {
       opponent: isSet(object.opponent) ? String(object.opponent) : "",
       playerX: isSet(object.playerX) ? String(object.playerX) : "",
       playerO: isSet(object.playerO) ? String(object.playerO) : "",
+      board: Array.isArray(object?.board) ? object.board.map((e: any) => boardEntryFromJSON(e)) : [],
     };
   },
 
@@ -130,6 +186,11 @@ export const Game = {
     message.opponent !== undefined && (obj.opponent = message.opponent);
     message.playerX !== undefined && (obj.playerX = message.playerX);
     message.playerO !== undefined && (obj.playerO = message.playerO);
+    if (message.board) {
+      obj.board = message.board.map((e) => boardEntryToJSON(e));
+    } else {
+      obj.board = [];
+    }
     return obj;
   },
 
@@ -141,6 +202,7 @@ export const Game = {
     message.opponent = object.opponent ?? "";
     message.playerX = object.playerX ?? "";
     message.playerO = object.playerO ?? "";
+    message.board = object.board?.map((e) => e) || [];
     return message;
   },
 };

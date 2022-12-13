@@ -10,10 +10,17 @@ message Game {
   string opponent = 4;
   string playerX = 5;
   string playerO = 6;
+  repeated BoardEntry board = 7;
 }
 
 enum GameStatus {
   OPEN = 0;
   IN_PROGRESS = 1;
   COMPLETE = 2;
+}
+
+enum BoardEntry {
+  EMPTY = 0;
+  X = 1;
+  O = 2;
 }
