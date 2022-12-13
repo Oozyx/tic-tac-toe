@@ -39882,6 +39882,8 @@ paths:
                         - IN_PROGRESS
                         - COMPLETE
                       default: OPEN
+                    playerOne:
+                      type: string
               pagination:
                 type: object
                 properties:
@@ -40012,6 +40014,8 @@ paths:
                         - IN_PROGRESS
                         - COMPLETE
                       default: OPEN
+                    playerOne:
+                      type: string
               pagination:
                 type: object
                 properties:
@@ -67308,6 +67312,8 @@ definitions:
                 - IN_PROGRESS
                 - COMPLETE
               default: OPEN
+            playerOne:
+              type: string
       pagination:
         type: object
         properties:
@@ -67352,6 +67358,8 @@ definitions:
                 - IN_PROGRESS
                 - COMPLETE
               default: OPEN
+            playerOne:
+              type: string
       pagination:
         type: object
         properties:
@@ -67398,6 +67406,8 @@ definitions:
           - IN_PROGRESS
           - COMPLETE
         default: OPEN
+      playerOne:
+        type: string
   tictactoe.tictactoe.game.GameStatus:
     type: string
     enum:

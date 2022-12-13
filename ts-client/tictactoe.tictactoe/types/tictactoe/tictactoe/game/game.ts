@@ -45,10 +45,11 @@ export function gameStatusToJSON(object: GameStatus): string {
 export interface Game {
   id: number;
   status: GameStatus;
+  playerOne: string;
 }
 
 function createBaseGame(): Game {
-  return { id: 0, status: 0 };
+  return { id: 0, status: 0, playerOne: "" };
 }
 
 export const Game = {
@@ -58,6 +59,9 @@ export const Game = {
     }
     if (message.status !== 0) {
       writer.uint32(16).int32(message.status);
+    }
+    if (message.playerOne !== "") {
+      writer.uint32(26).string(message.playerOne);
     }
     return writer;
   },
@@ -75,6 +79,9 @@ export const Game = {
         case 2:
           message.status = reader.int32() as any;
           break;
+        case 3:
+          message.playerOne = reader.string();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -87,6 +94,7 @@ export const Game = {
     return {
       id: isSet(object.id) ? Number(object.id) : 0,
       status: isSet(object.status) ? gameStatusFromJSON(object.status) : 0,
+      playerOne: isSet(object.playerOne) ? String(object.playerOne) : "",
     };
   },
 
@@ -94,6 +102,7 @@ export const Game = {
     const obj: any = {};
     message.id !== undefined && (obj.id = Math.round(message.id));
     message.status !== undefined && (obj.status = gameStatusToJSON(message.status));
+    message.playerOne !== undefined && (obj.playerOne = message.playerOne);
     return obj;
   },
 
@@ -101,6 +110,7 @@ export const Game = {
     const message = createBaseGame();
     message.id = object.id ?? 0;
     message.status = object.status ?? 0;
+    message.playerOne = object.playerOne ?? "";
     return message;
   },
 };

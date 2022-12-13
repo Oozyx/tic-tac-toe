@@ -6,6 +6,7 @@ option go_package = "tic-tac-toe/x/tictactoe/types";
 message Game {
   uint32 id = 1;
   GameStatus status = 2;
+  string playerOne = 3;
 }
 
 enum GameStatus {

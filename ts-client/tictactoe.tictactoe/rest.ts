@@ -13,6 +13,7 @@ export interface GameGame {
   /** @format int64 */
   id?: number;
   status?: GameGameStatus;
+  playerOne?: string;
 }
 
 export enum GameGameStatus {
