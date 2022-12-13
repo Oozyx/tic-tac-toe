@@ -3,18 +3,61 @@ import _m0 from "protobufjs/minimal";
 
 export const protobufPackage = "tictactoe.tictactoe.game";
 
+export enum GameStatus {
+  OPEN = 0,
+  IN_PROGRESS = 1,
+  COMPLETE = 2,
+  UNRECOGNIZED = -1,
+}
+
+export function gameStatusFromJSON(object: any): GameStatus {
+  switch (object) {
+    case 0:
+    case "OPEN":
+      return GameStatus.OPEN;
+    case 1:
+    case "IN_PROGRESS":
+      return GameStatus.IN_PROGRESS;
+    case 2:
+    case "COMPLETE":
+      return GameStatus.COMPLETE;
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return GameStatus.UNRECOGNIZED;
+  }
+}
+
+export function gameStatusToJSON(object: GameStatus): string {
+  switch (object) {
+    case GameStatus.OPEN:
+      return "OPEN";
+    case GameStatus.IN_PROGRESS:
+      return "IN_PROGRESS";
+    case GameStatus.COMPLETE:
+      return "COMPLETE";
+    case GameStatus.UNRECOGNIZED:
+    default:
+      return "UNRECOGNIZED";
+  }
+}
+
 export interface Game {
   id: number;
+  status: GameStatus;
 }
 
 function createBaseGame(): Game {
-  return { id: 0 };
+  return { id: 0, status: 0 };
 }
 
 export const Game = {
   encode(message: Game, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.id !== 0) {
       writer.uint32(8).uint32(message.id);
+    }
+    if (message.status !== 0) {
+      writer.uint32(16).int32(message.status);
     }
     return writer;
   },
@@ -29,6 +72,9 @@ export const Game = {
         case 1:
           message.id = reader.uint32();
           break;
+        case 2:
+          message.status = reader.int32() as any;
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -38,18 +84,23 @@ export const Game = {
   },
 
   fromJSON(object: any): Game {
-    return { id: isSet(object.id) ? Number(object.id) : 0 };
+    return {
+      id: isSet(object.id) ? Number(object.id) : 0,
+      status: isSet(object.status) ? gameStatusFromJSON(object.status) : 0,
+    };
   },
 
   toJSON(message: Game): unknown {
     const obj: any = {};
     message.id !== undefined && (obj.id = Math.round(message.id));
+    message.status !== undefined && (obj.status = gameStatusToJSON(message.status));
     return obj;
   },
 
   fromPartial<I extends Exact<DeepPartial<Game>, I>>(object: I): Game {
     const message = createBaseGame();
     message.id = object.id ?? 0;
+    message.status = object.status ?? 0;
     return message;
   },
 };

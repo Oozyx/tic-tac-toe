@@ -19,7 +19,7 @@ func (k msgServer) CreateGame(goCtx context.Context, msg *types.MsgCreateGame) (
 	currentGameCount, gameCountBytes := k.GetGameCount(ctx)
 
 	// create game struct
-	game := types.Game{Id: currentGameCount}
+	game := types.Game{Id: currentGameCount, Status: types.GameStatus_OPEN}
 
 	// store the game data
 	gameBytes, err := game.Marshal()

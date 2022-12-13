@@ -12,6 +12,13 @@
 export interface GameGame {
   /** @format int64 */
   id?: number;
+  status?: GameGameStatus;
+}
+
+export enum GameGameStatus {
+  OPEN = "OPEN",
+  IN_PROGRESS = "IN_PROGRESS",
+  COMPLETE = "COMPLETE",
 }
 
 export interface ProtobufAny {

@@ -39875,6 +39875,13 @@ paths:
                     id:
                       type: integer
                       format: int64
+                    status:
+                      type: string
+                      enum:
+                        - OPEN
+                        - IN_PROGRESS
+                        - COMPLETE
+                      default: OPEN
               pagination:
                 type: object
                 properties:
@@ -67164,6 +67171,13 @@ definitions:
             id:
               type: integer
               format: int64
+            status:
+              type: string
+              enum:
+                - OPEN
+                - IN_PROGRESS
+                - COMPLETE
+              default: OPEN
       pagination:
         type: object
         properties:
@@ -67203,3 +67217,17 @@ definitions:
       id:
         type: integer
         format: int64
+      status:
+        type: string
+        enum:
+          - OPEN
+          - IN_PROGRESS
+          - COMPLETE
+        default: OPEN
+  tictactoe.tictactoe.game.GameStatus:
+    type: string
+    enum:
+      - OPEN
+      - IN_PROGRESS
+      - COMPLETE
+    default: OPEN
