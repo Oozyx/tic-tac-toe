@@ -5,6 +5,7 @@ import "gogoproto/gogo.proto";
 import "google/api/annotations.proto";
 import "cosmos/base/query/v1beta1/pagination.proto";
 import "tictactoe/tictactoe/params.proto";
+import "tictactoe/tictactoe/game/game.proto";
 // this line is used by starport scaffolding # 1
 
 option go_package = "tic-tac-toe/x/tictactoe/types";
@@ -15,7 +16,12 @@ service Query {
   rpc Params(QueryParamsRequest) returns (QueryParamsResponse) {
     option (google.api.http).get = "/tic-tac-toe/tictactoe/params";
   }
-  // this line is used by starport scaffolding # 2
+  // Queries a list of Games items.
+	rpc Games(QueryGamesRequest) returns (QueryGamesResponse) {
+		option (google.api.http).get = "/tic-tac-toe/tictactoe/games";
+	}
+
+// this line is used by starport scaffolding # 2
 }
 
 // QueryParamsRequest is request type for the Query/Params RPC method.
@@ -25,6 +31,16 @@ message QueryParamsRequest {}
 message QueryParamsResponse {
   // params holds all the parameters of this module.
   Params params = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryGamesRequest {
+  cosmos.base.query.v1beta1.PageRequest pagination = 1;
+}
+
+message QueryGamesResponse {
+  repeated game.Game games = 1;
+
+  cosmos.base.query.v1beta1.PageResponse pagination = 2;
 }
 
 // this line is used by starport scaffolding # 3

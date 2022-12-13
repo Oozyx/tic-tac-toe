@@ -20,12 +20,20 @@ export interface RpcStatus {
   details?: ProtobufAny[];
 }
 
-export type TictactoeMsgCreateGameResponse = object;
+export interface TictactoeMsgCreateGameResponse {
+  /** @format int64 */
+  gameId?: number;
+}
 
 /**
  * Params defines the parameters for the module.
  */
 export type TictactoeParams = object;
+
+export interface TictactoeQueryGamesResponse {
+  /** @format int32 */
+  id?: number;
+}
 
 /**
  * QueryParamsResponse is response type for the Query/Params RPC method.
@@ -156,10 +164,26 @@ export class HttpClient<SecurityDataType = unknown> {
 }
 
 /**
- * @title tictactoe/tictactoe/genesis.proto
+ * @title tictactoe/tictactoe/game/game.proto
  * @version version not set
  */
 export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDataType> {
+  /**
+   * No description
+   *
+   * @tags Query
+   * @name QueryGames
+   * @summary Queries a list of Games items.
+   * @request GET:/tic-tac-toe/tictactoe/games
+   */
+  queryGames = (params: RequestParams = {}) =>
+    this.request<TictactoeQueryGamesResponse, RpcStatus>({
+      path: `/tic-tac-toe/tictactoe/games`,
+      method: "GET",
+      format: "json",
+      ...params,
+    });
+
   /**
    * No description
    *

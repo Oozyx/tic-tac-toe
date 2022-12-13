@@ -8,6 +8,7 @@ export interface MsgCreateGame {
 }
 
 export interface MsgCreateGameResponse {
+  gameId: number;
 }
 
 function createBaseMsgCreateGame(): MsgCreateGame {
@@ -58,11 +59,14 @@ export const MsgCreateGame = {
 };
 
 function createBaseMsgCreateGameResponse(): MsgCreateGameResponse {
-  return {};
+  return { gameId: 0 };
 }
 
 export const MsgCreateGameResponse = {
-  encode(_: MsgCreateGameResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+  encode(message: MsgCreateGameResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.gameId !== 0) {
+      writer.uint32(8).uint32(message.gameId);
+    }
     return writer;
   },
 
@@ -73,6 +77,9 @@ export const MsgCreateGameResponse = {
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
+        case 1:
+          message.gameId = reader.uint32();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -81,17 +88,19 @@ export const MsgCreateGameResponse = {
     return message;
   },
 
-  fromJSON(_: any): MsgCreateGameResponse {
-    return {};
+  fromJSON(object: any): MsgCreateGameResponse {
+    return { gameId: isSet(object.gameId) ? Number(object.gameId) : 0 };
   },
 
-  toJSON(_: MsgCreateGameResponse): unknown {
+  toJSON(message: MsgCreateGameResponse): unknown {
     const obj: any = {};
+    message.gameId !== undefined && (obj.gameId = Math.round(message.gameId));
     return obj;
   },
 
-  fromPartial<I extends Exact<DeepPartial<MsgCreateGameResponse>, I>>(_: I): MsgCreateGameResponse {
+  fromPartial<I extends Exact<DeepPartial<MsgCreateGameResponse>, I>>(object: I): MsgCreateGameResponse {
     const message = createBaseMsgCreateGameResponse();
+    message.gameId = object.gameId ?? 0;
     return message;
   },
 };

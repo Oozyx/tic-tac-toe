@@ -14,6 +14,13 @@ export interface QueryParamsResponse {
   params: Params | undefined;
 }
 
+export interface QueryGamesRequest {
+}
+
+export interface QueryGamesResponse {
+  id: number;
+}
+
 function createBaseQueryParamsRequest(): QueryParamsRequest {
   return {};
 }
@@ -102,10 +109,98 @@ export const QueryParamsResponse = {
   },
 };
 
+function createBaseQueryGamesRequest(): QueryGamesRequest {
+  return {};
+}
+
+export const QueryGamesRequest = {
+  encode(_: QueryGamesRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryGamesRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQueryGamesRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(_: any): QueryGamesRequest {
+    return {};
+  },
+
+  toJSON(_: QueryGamesRequest): unknown {
+    const obj: any = {};
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<QueryGamesRequest>, I>>(_: I): QueryGamesRequest {
+    const message = createBaseQueryGamesRequest();
+    return message;
+  },
+};
+
+function createBaseQueryGamesResponse(): QueryGamesResponse {
+  return { id: 0 };
+}
+
+export const QueryGamesResponse = {
+  encode(message: QueryGamesResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.id !== 0) {
+      writer.uint32(8).int32(message.id);
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryGamesResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQueryGamesResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.id = reader.int32();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryGamesResponse {
+    return { id: isSet(object.id) ? Number(object.id) : 0 };
+  },
+
+  toJSON(message: QueryGamesResponse): unknown {
+    const obj: any = {};
+    message.id !== undefined && (obj.id = Math.round(message.id));
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<QueryGamesResponse>, I>>(object: I): QueryGamesResponse {
+    const message = createBaseQueryGamesResponse();
+    message.id = object.id ?? 0;
+    return message;
+  },
+};
+
 /** Query defines the gRPC querier service. */
 export interface Query {
   /** Parameters queries the parameters of the module. */
   Params(request: QueryParamsRequest): Promise<QueryParamsResponse>;
+  /** Queries a list of Games items. */
+  Games(request: QueryGamesRequest): Promise<QueryGamesResponse>;
 }
 
 export class QueryClientImpl implements Query {
@@ -113,11 +208,18 @@ export class QueryClientImpl implements Query {
   constructor(rpc: Rpc) {
     this.rpc = rpc;
     this.Params = this.Params.bind(this);
+    this.Games = this.Games.bind(this);
   }
   Params(request: QueryParamsRequest): Promise<QueryParamsResponse> {
     const data = QueryParamsRequest.encode(request).finish();
     const promise = this.rpc.request("tictactoe.tictactoe.Query", "Params", data);
     return promise.then((data) => QueryParamsResponse.decode(new _m0.Reader(data)));
+  }
+
+  Games(request: QueryGamesRequest): Promise<QueryGamesResponse> {
+    const data = QueryGamesRequest.encode(request).finish();
+    const promise = this.rpc.request("tictactoe.tictactoe.Query", "Games", data);
+    return promise.then((data) => QueryGamesResponse.decode(new _m0.Reader(data)));
   }
 }
 
