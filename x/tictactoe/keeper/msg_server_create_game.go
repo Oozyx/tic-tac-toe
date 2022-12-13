@@ -35,5 +35,5 @@ func (k msgServer) CreateGame(goCtx context.Context, msg *types.MsgCreateGame) (
 	// increment game count
 	k.incrementGameCount(ctx)
 
-	return &types.MsgCreateGameResponse{}, nil
+	return &types.MsgCreateGameResponse{GameId: currentGameCount}, nil
 }
