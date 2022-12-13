@@ -47,10 +47,12 @@ export interface Game {
   status: GameStatus;
   challenger: string;
   opponent: string;
+  playerX: string;
+  playerO: string;
 }
 
 function createBaseGame(): Game {
-  return { id: 0, status: 0, challenger: "", opponent: "" };
+  return { id: 0, status: 0, challenger: "", opponent: "", playerX: "", playerO: "" };
 }
 
 export const Game = {
@@ -66,6 +68,12 @@ export const Game = {
     }
     if (message.opponent !== "") {
       writer.uint32(34).string(message.opponent);
+    }
+    if (message.playerX !== "") {
+      writer.uint32(42).string(message.playerX);
+    }
+    if (message.playerO !== "") {
+      writer.uint32(50).string(message.playerO);
     }
     return writer;
   },
@@ -89,6 +97,12 @@ export const Game = {
         case 4:
           message.opponent = reader.string();
           break;
+        case 5:
+          message.playerX = reader.string();
+          break;
+        case 6:
+          message.playerO = reader.string();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -103,6 +117,8 @@ export const Game = {
       status: isSet(object.status) ? gameStatusFromJSON(object.status) : 0,
       challenger: isSet(object.challenger) ? String(object.challenger) : "",
       opponent: isSet(object.opponent) ? String(object.opponent) : "",
+      playerX: isSet(object.playerX) ? String(object.playerX) : "",
+      playerO: isSet(object.playerO) ? String(object.playerO) : "",
     };
   },
 
@@ -112,6 +128,8 @@ export const Game = {
     message.status !== undefined && (obj.status = gameStatusToJSON(message.status));
     message.challenger !== undefined && (obj.challenger = message.challenger);
     message.opponent !== undefined && (obj.opponent = message.opponent);
+    message.playerX !== undefined && (obj.playerX = message.playerX);
+    message.playerO !== undefined && (obj.playerO = message.playerO);
     return obj;
   },
 
@@ -121,6 +139,8 @@ export const Game = {
     message.status = object.status ?? 0;
     message.challenger = object.challenger ?? "";
     message.opponent = object.opponent ?? "";
+    message.playerX = object.playerX ?? "";
+    message.playerO = object.playerO ?? "";
     return message;
   },
 };

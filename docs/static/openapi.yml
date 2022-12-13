@@ -39886,6 +39886,10 @@ paths:
                       type: string
                     opponent:
                       type: string
+                    playerX:
+                      type: string
+                    playerO:
+                      type: string
               pagination:
                 type: object
                 properties:
@@ -40019,6 +40023,10 @@ paths:
                     challenger:
                       type: string
                     opponent:
+                      type: string
+                    playerX:
+                      type: string
+                    playerO:
                       type: string
               pagination:
                 type: object
@@ -67322,6 +67330,10 @@ definitions:
               type: string
             opponent:
               type: string
+            playerX:
+              type: string
+            playerO:
+              type: string
       pagination:
         type: object
         properties:
@@ -67369,6 +67381,10 @@ definitions:
             challenger:
               type: string
             opponent:
+              type: string
+            playerX:
+              type: string
+            playerO:
               type: string
       pagination:
         type: object
@@ -67419,6 +67435,10 @@ definitions:
       challenger:
         type: string
       opponent:
+        type: string
+      playerX:
+        type: string
+      playerO:
         type: string
   tictactoe.tictactoe.game.GameStatus:
     type: string

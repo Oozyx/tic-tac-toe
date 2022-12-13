@@ -2,6 +2,7 @@ package keeper
 
 import (
 	"context"
+	"crypto/sha256"
 	"encoding/binary"
 	"errors"
 
@@ -43,9 +44,24 @@ func (k msgServer) AcceptGame(goCtx context.Context, msg *types.MsgAcceptGame) (
 		return nil, errors.New("cannot accept own game invitation")
 	}
 
+	// calculate player x and player o
+	hsha := sha256.Sum256([]byte(game.Challenger + msg.Creator))
+	lastBit := binary.BigEndian.Uint32(hsha[:]) & 1
+
+	var playerX, playerO string
+	if lastBit == 0 {
+		playerX = msg.Creator
+		playerO = game.Challenger
+	} else {
+		playerX = game.Challenger
+		playerO = msg.Creator
+	}
+
 	// set new game data
 	game.Status = types.GameStatus_IN_PROGRESS
 	game.Opponent = msg.Creator
+	game.PlayerX = playerX
+	game.PlayerO = playerO
 
 	// update store
 	gameBytes, err = k.cdc.Marshal(&game)

@@ -15,6 +15,8 @@ export interface GameGame {
   status?: GameGameStatus;
   challenger?: string;
   opponent?: string;
+  playerX?: string;
+  playerO?: string;
 }
 
 export enum GameGameStatus {

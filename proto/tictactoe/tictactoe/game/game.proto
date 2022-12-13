@@ -8,6 +8,8 @@ message Game {
   GameStatus status = 2;
   string challenger = 3;
   string opponent = 4;
+  string playerX = 5;
+  string playerO = 6;
 }
 
 enum GameStatus {
