@@ -12,6 +12,9 @@ const (
 
 	// MemStoreKey defines the in-memory store key
 	MemStoreKey = "mem_tictactoe"
+
+	// GameCountKey defines the memory store for the amount of games created. Used as a unique game id.
+	GameCountKey = "game/count"
 )
 
 func KeyPrefix(p string) []byte {
