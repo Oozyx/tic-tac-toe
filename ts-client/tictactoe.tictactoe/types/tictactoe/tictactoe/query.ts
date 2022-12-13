@@ -25,6 +25,15 @@ export interface QueryGamesResponse {
   pagination: PageResponse | undefined;
 }
 
+export interface QueryOpenGamesRequest {
+  pagination: PageRequest | undefined;
+}
+
+export interface QueryOpenGamesResponse {
+  games: Game[];
+  pagination: PageResponse | undefined;
+}
+
 function createBaseQueryParamsRequest(): QueryParamsRequest {
   return {};
 }
@@ -228,12 +237,129 @@ export const QueryGamesResponse = {
   },
 };
 
+function createBaseQueryOpenGamesRequest(): QueryOpenGamesRequest {
+  return { pagination: undefined };
+}
+
+export const QueryOpenGamesRequest = {
+  encode(message: QueryOpenGamesRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.pagination !== undefined) {
+      PageRequest.encode(message.pagination, writer.uint32(10).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryOpenGamesRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQueryOpenGamesRequest();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.pagination = PageRequest.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryOpenGamesRequest {
+    return { pagination: isSet(object.pagination) ? PageRequest.fromJSON(object.pagination) : undefined };
+  },
+
+  toJSON(message: QueryOpenGamesRequest): unknown {
+    const obj: any = {};
+    message.pagination !== undefined
+      && (obj.pagination = message.pagination ? PageRequest.toJSON(message.pagination) : undefined);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<QueryOpenGamesRequest>, I>>(object: I): QueryOpenGamesRequest {
+    const message = createBaseQueryOpenGamesRequest();
+    message.pagination = (object.pagination !== undefined && object.pagination !== null)
+      ? PageRequest.fromPartial(object.pagination)
+      : undefined;
+    return message;
+  },
+};
+
+function createBaseQueryOpenGamesResponse(): QueryOpenGamesResponse {
+  return { games: [], pagination: undefined };
+}
+
+export const QueryOpenGamesResponse = {
+  encode(message: QueryOpenGamesResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    for (const v of message.games) {
+      Game.encode(v!, writer.uint32(10).fork()).ldelim();
+    }
+    if (message.pagination !== undefined) {
+      PageResponse.encode(message.pagination, writer.uint32(18).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryOpenGamesResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQueryOpenGamesResponse();
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.games.push(Game.decode(reader, reader.uint32()));
+          break;
+        case 2:
+          message.pagination = PageResponse.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryOpenGamesResponse {
+    return {
+      games: Array.isArray(object?.games) ? object.games.map((e: any) => Game.fromJSON(e)) : [],
+      pagination: isSet(object.pagination) ? PageResponse.fromJSON(object.pagination) : undefined,
+    };
+  },
+
+  toJSON(message: QueryOpenGamesResponse): unknown {
+    const obj: any = {};
+    if (message.games) {
+      obj.games = message.games.map((e) => e ? Game.toJSON(e) : undefined);
+    } else {
+      obj.games = [];
+    }
+    message.pagination !== undefined
+      && (obj.pagination = message.pagination ? PageResponse.toJSON(message.pagination) : undefined);
+    return obj;
+  },
+
+  fromPartial<I extends Exact<DeepPartial<QueryOpenGamesResponse>, I>>(object: I): QueryOpenGamesResponse {
+    const message = createBaseQueryOpenGamesResponse();
+    message.games = object.games?.map((e) => Game.fromPartial(e)) || [];
+    message.pagination = (object.pagination !== undefined && object.pagination !== null)
+      ? PageResponse.fromPartial(object.pagination)
+      : undefined;
+    return message;
+  },
+};
+
 /** Query defines the gRPC querier service. */
 export interface Query {
   /** Parameters queries the parameters of the module. */
   Params(request: QueryParamsRequest): Promise<QueryParamsResponse>;
   /** Queries a list of Games items. */
   Games(request: QueryGamesRequest): Promise<QueryGamesResponse>;
+  /** Queries a list of OpenGames items. */
+  OpenGames(request: QueryOpenGamesRequest): Promise<QueryOpenGamesResponse>;
 }
 
 export class QueryClientImpl implements Query {
@@ -242,6 +368,7 @@ export class QueryClientImpl implements Query {
     this.rpc = rpc;
     this.Params = this.Params.bind(this);
     this.Games = this.Games.bind(this);
+    this.OpenGames = this.OpenGames.bind(this);
   }
   Params(request: QueryParamsRequest): Promise<QueryParamsResponse> {
     const data = QueryParamsRequest.encode(request).finish();
@@ -253,6 +380,12 @@ export class QueryClientImpl implements Query {
     const data = QueryGamesRequest.encode(request).finish();
     const promise = this.rpc.request("tictactoe.tictactoe.Query", "Games", data);
     return promise.then((data) => QueryGamesResponse.decode(new _m0.Reader(data)));
+  }
+
+  OpenGames(request: QueryOpenGamesRequest): Promise<QueryOpenGamesResponse> {
+    const data = QueryOpenGamesRequest.encode(request).finish();
+    const promise = this.rpc.request("tictactoe.tictactoe.Query", "OpenGames", data);
+    return promise.then((data) => QueryOpenGamesResponse.decode(new _m0.Reader(data)));
   }
 }
 

@@ -57,6 +57,21 @@ export interface TictactoeQueryGamesResponse {
   pagination?: V1Beta1PageResponse;
 }
 
+export interface TictactoeQueryOpenGamesResponse {
+  games?: GameGame[];
+
+  /**
+   * PageResponse is to be embedded in gRPC response messages where the
+   * corresponding request message has used PageRequest.
+   *
+   *  message SomeResponse {
+   *          repeated Bar results = 1;
+   *          PageResponse page = 2;
+   *  }
+   */
+  pagination?: V1Beta1PageResponse;
+}
+
 /**
  * QueryParamsResponse is response type for the Query/Params RPC method.
  */
@@ -282,6 +297,32 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
   ) =>
     this.request<TictactoeQueryGamesResponse, RpcStatus>({
       path: `/tic-tac-toe/tictactoe/games`,
+      method: "GET",
+      query: query,
+      format: "json",
+      ...params,
+    });
+
+  /**
+   * No description
+   *
+   * @tags Query
+   * @name QueryOpenGames
+   * @summary Queries a list of OpenGames items.
+   * @request GET:/tic-tac-toe/tictactoe/open_games
+   */
+  queryOpenGames = (
+    query?: {
+      "pagination.key"?: string;
+      "pagination.offset"?: string;
+      "pagination.limit"?: string;
+      "pagination.count_total"?: boolean;
+      "pagination.reverse"?: boolean;
+    },
+    params: RequestParams = {},
+  ) =>
+    this.request<TictactoeQueryOpenGamesResponse, RpcStatus>({
+      path: `/tic-tac-toe/tictactoe/open_games`,
       method: "GET",
       query: query,
       format: "json",
