@@ -46,10 +46,11 @@ export interface Game {
   id: number;
   status: GameStatus;
   playerOne: string;
+  playerTwo: string;
 }
 
 function createBaseGame(): Game {
-  return { id: 0, status: 0, playerOne: "" };
+  return { id: 0, status: 0, playerOne: "", playerTwo: "" };
 }
 
 export const Game = {
@@ -62,6 +63,9 @@ export const Game = {
     }
     if (message.playerOne !== "") {
       writer.uint32(26).string(message.playerOne);
+    }
+    if (message.playerTwo !== "") {
+      writer.uint32(34).string(message.playerTwo);
     }
     return writer;
   },
@@ -82,6 +86,9 @@ export const Game = {
         case 3:
           message.playerOne = reader.string();
           break;
+        case 4:
+          message.playerTwo = reader.string();
+          break;
         default:
           reader.skipType(tag & 7);
           break;
@@ -95,6 +102,7 @@ export const Game = {
       id: isSet(object.id) ? Number(object.id) : 0,
       status: isSet(object.status) ? gameStatusFromJSON(object.status) : 0,
       playerOne: isSet(object.playerOne) ? String(object.playerOne) : "",
+      playerTwo: isSet(object.playerTwo) ? String(object.playerTwo) : "",
     };
   },
 
@@ -103,6 +111,7 @@ export const Game = {
     message.id !== undefined && (obj.id = Math.round(message.id));
     message.status !== undefined && (obj.status = gameStatusToJSON(message.status));
     message.playerOne !== undefined && (obj.playerOne = message.playerOne);
+    message.playerTwo !== undefined && (obj.playerTwo = message.playerTwo);
     return obj;
   },
 
@@ -111,6 +120,7 @@ export const Game = {
     message.id = object.id ?? 0;
     message.status = object.status ?? 0;
     message.playerOne = object.playerOne ?? "";
+    message.playerTwo = object.playerTwo ?? "";
     return message;
   },
 };

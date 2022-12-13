@@ -14,6 +14,7 @@ export interface GameGame {
   id?: number;
   status?: GameGameStatus;
   playerOne?: string;
+  playerTwo?: string;
 }
 
 export enum GameGameStatus {

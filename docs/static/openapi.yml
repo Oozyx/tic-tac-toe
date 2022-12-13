@@ -39884,6 +39884,8 @@ paths:
                       default: OPEN
                     playerOne:
                       type: string
+                    playerTwo:
+                      type: string
               pagination:
                 type: object
                 properties:
@@ -40015,6 +40017,8 @@ paths:
                         - COMPLETE
                       default: OPEN
                     playerOne:
+                      type: string
+                    playerTwo:
                       type: string
               pagination:
                 type: object
@@ -67316,6 +67320,8 @@ definitions:
               default: OPEN
             playerOne:
               type: string
+            playerTwo:
+              type: string
       pagination:
         type: object
         properties:
@@ -67361,6 +67367,8 @@ definitions:
                 - COMPLETE
               default: OPEN
             playerOne:
+              type: string
+            playerTwo:
               type: string
       pagination:
         type: object
@@ -67409,6 +67417,8 @@ definitions:
           - COMPLETE
         default: OPEN
       playerOne:
+        type: string
+      playerTwo:
         type: string
   tictactoe.tictactoe.game.GameStatus:
     type: string

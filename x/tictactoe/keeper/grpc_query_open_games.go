@@ -37,6 +37,8 @@ func (k Keeper) OpenGames(goCtx context.Context, req *types.QueryOpenGamesReques
 		return nil
 	})
 
+	pageRes.Total = uint64(len(games))
+
 	if err != nil {
 		return nil, err
 	}
